@@ -1,0 +1,29 @@
+backend/.env
+
+venv/
+__pycache__/
+*.pyc
+
+node_modules/
+dist/
+
+.idea/
+# Base de données locale
+backend/db.sqlite3
+
+# Sauvegarde locale des dépendances
+backend/requirements-full.txt
+
+# Fichiers temporaires de commandes
+resultat.txt
+
+# Documents/images utilisés pour les essais manuels
+backend/*.png
+backend/*.jpg
+backend/*.pdf
+backend/*.csv
+backend/*.xlsx
+
+# Ancien modèle et datasets LayoutLMv3
+backend/document_ai/models/
+backend/document_ai/dataset/

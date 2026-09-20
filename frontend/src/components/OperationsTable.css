@@ -1,0 +1,150 @@
+.all-operations-table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  margin-top: 20px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.all-operations-table {
+  width: 100%;
+  min-width: 1050px;
+
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.all-operations-table th {
+  padding: 14px 16px;
+
+  font-size: 11.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  color: #64748b;
+  background: #f8fafc;
+}
+
+.all-operations-table td {
+  padding: 15px 16px;
+  border-top: 1px solid #edf1f5;
+
+  font-size: 13px;
+  color: #334155;
+}
+
+.all-operations-table tbody tr {
+  transition: background 0.16s ease;
+}
+
+.all-operations-table tbody tr:hover {
+  background: #f8fbfd;
+}
+
+.operation-reference {
+  font-weight: 700;
+  color: #0b1f3a !important;
+}
+
+.operation-table-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 6px 10px;
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Types */
+
+.type-import {
+  color: #0369a1;
+  background: #e0f2fe;
+}
+
+.type-export {
+  color: #047857;
+  background: #d1fae5;
+}
+
+/* Statuts */
+
+.status-planifiee {
+  color: #6d28d9;
+  background: #ede9fe;
+}
+
+.status-en_transit {
+  color: #c2410c;
+  background: #ffedd5;
+}
+
+.status-livree {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.status-annulee {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+.operations-empty {
+  margin-top: 20px;
+  padding: 40px 20px;
+
+  text-align: center;
+  color: #64748b;
+
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 14px;
+}
+.operation-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.action-button {
+  width: 34px;
+  height: 34px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.action-button:hover {
+  transform: translateY(-1px);
+}
+
+.action-view {
+  color: #0369a1;
+  background: #e0f2fe;
+}
+
+.action-edit {
+  color: #7c3aed;
+  background: #ede9fe;
+}
+
+.action-delete {
+  color: #dc2626;
+  background: #fee2e2;
+}

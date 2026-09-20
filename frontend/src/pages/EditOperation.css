@@ -1,0 +1,388 @@
+/* ===================== Variables & layout global ===================== */
+:root {
+  --navy: #0b1f3a;
+  --blue-dark: #123f70;
+  --cyan: #22b8cf;
+  --bg: #f4f7fb;
+  --white: #ffffff;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --error: #e11d48;
+  --error-bg: #fef2f2;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.add-operation-content {
+  padding: 28px 32px 48px;
+  flex: 1;
+}
+
+/* ===================== Carte principale ===================== */
+.operation-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px -18px rgba(11, 31, 58, 0.18);
+  padding: 32px 36px 36px;
+  max-width: 980px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Filet de dégradé signature en haut de carte, rappel navy -> cyan */
+.operation-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--blue-dark) 45%, var(--cyan) 100%);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 22px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--navy), var(--cyan));
+  box-shadow: 0 6px 16px -6px rgba(34, 184, 207, 0.55);
+}
+
+.card-header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.card-header p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+/* ===================== Bandeau d'alerte (erreur / succès) ===================== */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.alert-error {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid #fecdd3;
+}
+
+.alert-success {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid #bbf7d0;
+}
+
+/* ===================== Structure du formulaire : la "spine" logistique =====================
+   Chaque section est présentée comme une étape du parcours d'une opération
+   (identification -> conditions commerciales -> transport), reliées par un
+   fil vertical, comme une ligne de trajet. */
+.operation-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section {
+  display: flex;
+  gap: 20px;
+}
+
+.section-marker {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 36px;
+}
+
+.marker-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--navy), var(--blue-dark));
+  box-shadow: 0 4px 10px -4px rgba(11, 31, 58, 0.45);
+  flex-shrink: 0;
+}
+
+.marker-line {
+  flex: 1;
+  width: 2px;
+  margin-top: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--cyan) 0,
+    var(--cyan) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  min-height: 40px;
+}
+
+.section-body {
+  flex: 1;
+  padding-bottom: 28px;
+  min-width: 0;
+}
+
+.form-section--last .section-body {
+  padding-bottom: 8px;
+}
+
+.section-heading h3 {
+  margin: 2px 0 2px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.section-heading p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ===================== Grille des champs ===================== */
+.fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px 22px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field--full {
+  grid-column: 1 / -1;
+}
+
+.field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.required {
+  color: var(--cyan);
+  margin-left: 3px;
+}
+
+.field-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 0 12px;
+  background: var(--white);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.field-input:focus-within {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(34, 184, 207, 0.16);
+}
+
+.field-input--error {
+  border-color: var(--error);
+}
+
+.field-input--error:focus-within {
+  box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.14);
+}
+
+.field-icon {
+  display: flex;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+}
+
+.field-input input,
+.field-input select {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 10px 0;
+  font-size: 13.5px;
+  color: var(--navy);
+  min-width: 0;
+}
+
+.field-input select {
+  cursor: pointer;
+}
+
+.field-input input::placeholder {
+  color: #a3b1c2;
+}
+
+.field-error {
+  font-size: 12px;
+  color: var(--error);
+}
+
+/* ===================== Actions ===================== */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--blue-dark);
+  color: var(--blue-dark);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--navy), var(--cyan));
+  color: var(--white);
+  box-shadow: 0 8px 20px -8px rgba(34, 184, 207, 0.55);
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -8px rgba(34, 184, 207, 0.65);
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================== Chargement initial de la page ===================== */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.page-loading svg {
+  color: var(--blue-dark);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 860px) {
+  .add-operation-content {
+    padding: 20px 16px 36px;
+  }
+
+  .operation-card {
+    padding: 24px 20px 28px;
+    border-radius: 16px;
+  }
+
+  .fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-section {
+    gap: 14px;
+  }
+
+  .marker-badge {
+    width: 32px;
+    height: 32px;
+  }
+
+  .section-marker {
+    width: 32px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    justify-content: center;
+    width: 100%;
+  }
+}

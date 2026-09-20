@@ -1,0 +1,418 @@
+/* ===================== Variables & layout global ===================== */
+:root {
+  --navy: #0b1f3a;
+  --blue-dark: #123f70;
+  --cyan: #22b8cf;
+  --bg: #f4f7fb;
+  --white: #ffffff;
+  --text-secondary: #64748b;
+  --border: #e2e8f0;
+  --error: #e11d48;
+  --error-bg: #fef2f2;
+  --success: #16a34a;
+  --success-bg: #f0fdf4;
+  --warning: #d97706;
+  --warning-bg: #fffbeb;
+}
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.operation-details-content {
+  padding: 28px 32px 48px;
+  flex: 1;
+}
+
+/* ===================== Carte principale ===================== */
+.details-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: 0 12px 30px -18px rgba(11, 31, 58, 0.18);
+  padding: 32px 36px 36px;
+  max-width: 980px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.details-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--navy) 0%, var(--blue-dark) 45%, var(--cyan) 100%);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 22px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--navy), var(--cyan));
+  box-shadow: 0 6px 16px -6px rgba(34, 184, 207, 0.55);
+}
+
+.card-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-header h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.card-header p {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--text-secondary);
+}
+
+.ref-tag {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--blue-dark);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+/* ===================== Badge de statut (en-tête) ===================== */
+.status-badge {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.badge-planifiee {
+  color: #6d28d9;
+  background: #ede9fe;
+}
+
+.badge-transit {
+  color: #c2410c;
+  background: #ffedd5;
+}
+
+.badge-livree {
+  color: #047857;
+  background: #d1fae5;
+}
+
+.badge-annulee {
+  color: #b91c1c;
+  background: #fee2e2;
+}
+
+/* ===================== Alerte ===================== */
+.alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.alert-error {
+  background: var(--error-bg);
+  color: var(--error);
+  border: 1px solid #fecdd3;
+}
+
+/* ===================== Chargement initial ===================== */
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 60px 20px;
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  font-weight: 500;
+}
+
+.page-loading svg {
+  color: var(--blue-dark);
+}
+
+.spin {
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===================== Sections (même "spine" que les formulaires) ===================== */
+.details-section {
+  display: flex;
+  gap: 20px;
+}
+
+.section-marker {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 36px;
+}
+
+.marker-badge {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  background: linear-gradient(135deg, var(--navy), var(--blue-dark));
+  box-shadow: 0 4px 10px -4px rgba(11, 31, 58, 0.45);
+  flex-shrink: 0;
+}
+
+.marker-line {
+  flex: 1;
+  width: 2px;
+  margin-top: 6px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--cyan) 0,
+    var(--cyan) 4px,
+    transparent 4px,
+    transparent 9px
+  );
+  min-height: 40px;
+}
+
+.section-body {
+  flex: 1;
+  padding-bottom: 28px;
+  min-width: 0;
+}
+
+.details-section--last .section-body {
+  padding-bottom: 8px;
+}
+
+.section-heading h3 {
+  margin: 2px 0 2px;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.section-heading p {
+  margin: 0 0 18px;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ===================== Grille des informations (lecture seule) ===================== */
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 22px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.detail-item--full {
+  grid-column: 1 / -1;
+}
+
+.detail-item--highlight {
+  background: linear-gradient(135deg, rgba(11, 31, 58, 0.04), rgba(34, 184, 207, 0.08));
+  border-color: rgba(34, 184, 207, 0.35);
+}
+
+.detail-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.detail-icon {
+  display: flex;
+  color: var(--blue-dark);
+  flex-shrink: 0;
+}
+
+.detail-value {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--navy);
+  word-break: break-word;
+}
+
+.detail-item--highlight .detail-value {
+  font-size: 16px;
+}
+
+/* ===================== Badge de type (IMPORT / EXPORT) ===================== */
+.type-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.type-import {
+  color: var(--blue-dark);
+  background: #e6f0fa;
+}
+
+.type-export {
+  color: #0f766e;
+  background: #ecfdf5;
+}
+
+/* ===================== Actions ===================== */
+.details-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover {
+  border-color: var(--blue-dark);
+  color: var(--blue-dark);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--navy), var(--cyan));
+  color: var(--white);
+  box-shadow: 0 8px 20px -8px rgba(34, 184, 207, 0.55);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px -8px rgba(34, 184, 207, 0.65);
+}
+
+/* ===================== Responsive ===================== */
+@media (max-width: 860px) {
+  .operation-details-content {
+    padding: 20px 16px 36px;
+  }
+
+  .details-card {
+    padding: 24px 20px 28px;
+    border-radius: 16px;
+  }
+
+  .card-header {
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    margin-left: 58px;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .details-section {
+    gap: 14px;
+  }
+
+  .marker-badge {
+    width: 32px;
+    height: 32px;
+  }
+
+  .section-marker {
+    width: 32px;
+  }
+
+  .details-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
