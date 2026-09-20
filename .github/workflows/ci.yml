@@ -10,6 +10,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      SECRET_KEY : ci-test-secret-key
+
     defaults:
       run:
         working-directory: backend
@@ -30,6 +33,6 @@ jobs:
 
       - name: Vérifier Django
         run: python manage.py check
-        
+
       - name: Lancer les tests
         run: pytest
