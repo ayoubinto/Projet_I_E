@@ -77,7 +77,7 @@ class ExtractOperationView(APIView):
         except Exception as e:
             print("Erreur extraction : ",e)
 
-            response.Response(
+            return Response(
                 {
                     'success': False,
                     'error': "Impossible d'analyser le document"

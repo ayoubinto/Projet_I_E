@@ -165,13 +165,13 @@ export default function AddOperation() {
         });
       }, 400)
       console.log("Token :", token);
-      const response = await axios.post(
-          "http://127.0.0.1:8000/api/operations/extract-document/",
+      const response = await api.post(
+          "/operations/extract-document/",
           formData,
           {
-            headers: {
+            /*headers: {
               Authorization: `Bearer ${token}`,
-            },
+            },*/
             onUploadProgress: (progressEvent) => {
               if (!progressEvent.total) return;
 

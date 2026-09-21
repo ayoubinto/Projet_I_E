@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink , useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Workflow,
@@ -34,7 +34,18 @@ const secondaryLinks = [
   { to: "/help", label: "Aide", icon: HelpCircle },
 ];
 
-export default function Sidebar({ onLogout }) {
+export default function Sidebar() {
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+
+      sessionStorage.removeItem("accessToken");
+      sessionStorage.removeItem("refreshToken");
+
+      navigate("/login", { replace: true });
+  };
   // Mode réduit (icônes seules) — utile sur tablette
   const [collapsed, setCollapsed] = useState(false);
   // Ouverture du menu sur mobile (drawer + overlay)
@@ -133,7 +144,7 @@ export default function Sidebar({ onLogout }) {
           </div>
 
           {/* Bouton de déconnexion */}
-          <button className="logout-btn" onClick={onLogout} title="Déconnexion">
+          <button className="logout-btn" onClick={handleLogout} title="Déconnexion">
             <LogOut size={19} className="nav-icon" />
             <span className="nav-label">Déconnexion</span>
           </button>

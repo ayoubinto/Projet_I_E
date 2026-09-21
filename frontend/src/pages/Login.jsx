@@ -30,7 +30,7 @@ export default function LoginPage() {
     try{
       const response = await api.post("/token/",{
         username:username.trim(),
-        password:password.trim(),
+        password:password,
       });
       const storage = rememberMe ? localStorage : sessionStorage;
       const otherStorage = rememberMe ? sessionStorage : localStorage;
@@ -51,10 +51,10 @@ export default function LoginPage() {
     }finally {
       setLoading(false)
     }
-    setTimeout(() => {
+    /*setTimeout(() => {
       setLoading(false);
       setError("Nom d'utilisateur ou mot de passe incorrect. Veuillez réessayer.");
-    }, 1000);
+    }, 1000);*/
   };
 
   return (

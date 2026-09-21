@@ -1,0 +1,34 @@
+services:
+  backend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.backend
+
+    env_file:
+      - ../backend/.env
+
+    environment:
+      DB_HOST: host.docker.internal
+      OLLAMA_HOST: http://host.docker.internal:11434
+
+    command: gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 180
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - paddlex_models:/root/.paddlex
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile.frontend
+
+    ports:
+      - "3000:80"
+
+    depends_on:
+      - backend
+
+volumes:
+  paddlex_models:

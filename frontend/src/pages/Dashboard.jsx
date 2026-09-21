@@ -42,16 +42,9 @@ function Dashboard(){
     const totalEnTransit = operations.filter(
         (operations) => operations.status  === "EN_TRANSIT"
     ).length
-    const handleLogout = ()=>{
-        localStorage.removeItem("accessToken")
-        localStorage.removeItem("refreshToken")
-        sessionStorage.removeItem("accessToken")
-        sessionStorage.removeItem("refreshToken")
-        navigate("/login", {replace: true});
-    }
     return(
         <div className="dashboard-layout">
-            <Sidebar onLogout={handleLogout} />
+            <Sidebar />
             <main className="dashboard-main">
                 <Topbar />
                 {error && <p className="dashboard-error">{error}</p>}
