@@ -7,7 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  tests:
+  backend:
     runs-on: ubuntu-latest
 
     env:
@@ -34,7 +34,7 @@ jobs:
       - name: Vérifier Django
         run: python manage.py check
 
-      - name: Lancer les tests
+      - name: Lancer les backend
         run: pytest
 
   frontend:
@@ -63,7 +63,7 @@ jobs:
 
   docker-backend:
     runs-on: ubuntu-latest
-    needs: [tests, frontend]
+    needs: [backend, frontend]
 
     steps:
       - name: Récupérer le code
@@ -74,7 +74,7 @@ jobs:
 
   docker-frontend:
     runs-on: ubuntu-latest
-    needs: [ tests, frontend ]
+    needs: [ backend, frontend ]
 
     steps:
       - name: Récupérer le code
