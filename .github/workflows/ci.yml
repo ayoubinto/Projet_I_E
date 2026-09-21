@@ -60,3 +60,15 @@ jobs:
 
       - name: Build React
         run: npm run build
+
+  docker-backend:
+    runs-on: ubuntu-latest
+    needs: [tests, frontend]
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v7
+
+      - name: Construire l'image Docker backend
+        run: docker build -f deployment/Dockerfile.backend -t projet-ie-backend:test .
+

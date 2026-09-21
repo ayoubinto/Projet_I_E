@@ -1,0 +1,12 @@
+.git
+.github
+.idea
+venv
+**/__pycache__
+**/*.pyc
+**/node_modules
+backend/.env
+backend/db.sqlite3
+backend/document_ai/dataset
+backend/document_ai/models
+backend/requirements-full.txt
