@@ -81,4 +81,4 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Construire l'image Docker frontend
-        run: docker build -f deployment/Dockerfile.frondend -t projet-ie-frontend:test .
+        run: docker build -f deployment/Dockerfile.frontend -t projet-ie-frontend:test .
