@@ -72,3 +72,13 @@ jobs:
       - name: Construire l'image Docker backend
         run: docker build -f deployment/Dockerfile.backend -t projet-ie-backend:test .
 
+  docker-frontend:
+    runs-on: ubuntu-latest
+    needs: [ tests, frontend ]
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v7
+
+      - name: Construire l'image Docker frontend
+        run: docker build -f deployment/Dockerfile.frondend -t projet-ie-frontend:test .
