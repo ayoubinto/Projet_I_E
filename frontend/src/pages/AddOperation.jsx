@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import ExtractModal from "../components/ExtractModal";
 import {
   PackagePlus,
   Hash,
@@ -27,7 +28,6 @@ import Topbar from "../components/Topbar";
 import "./AddOperation.css";
 import {useState} from "react";
 import api from "../services/api";
-import axios from "axios";
 
 // Valeurs par défaut du formulaire
 const INITIAL_FORM = {
@@ -418,7 +418,7 @@ export default function AddOperation() {
             </div>
             {/* Popup de progression */}
             {isExtracting && (
-              <div className="extract-modal-overlay">
+              /*<div className="extract-modal-overlay">
                 <div className="extract-modal">
 
                   <Loader2
@@ -448,7 +448,11 @@ export default function AddOperation() {
                   </span>
 
                 </div>
-              </div>
+              </div>*/
+                <ExtractModal
+                  extractStep={extractStep}
+                  extractProgress={extractProgress}
+                />
             )}
             <form className="operation-form" onSubmit={handleSubmit} noValidate>
               {/* ---------- Section 1 : Identification ---------- */}

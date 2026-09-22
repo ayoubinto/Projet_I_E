@@ -90,15 +90,33 @@ class Operation(BaseModel):
 
 
 # Chargé une seule fois
-ocr = PaddleOCR(
+"""ocr = PaddleOCR(
     text_detection_model_name="PP-OCRv6_tiny_det",
     text_recognition_model_name="PP-OCRv6_tiny_rec",
     use_doc_orientation_classify=False,
     use_doc_unwarping=False,
     use_textline_orientation=False,
     engine="paddle"
-)
+)"""
+ocr = None
 
+
+def get_ocr():
+    global ocr
+
+    if ocr is None:
+        print("Chargement de PaddleOCR...")
+
+        ocr = PaddleOCR(
+            text_detection_model_name="PP-OCRv6_tiny_det",
+            text_recognition_model_name="PP-OCRv6_tiny_rec",
+            use_doc_orientation_classify=False,
+            use_doc_unwarping=False,
+            use_textline_orientation=False,
+            engine="paddle"
+        )
+
+    return ocr
 
 def extract_text(file_path):
     extension = Path(file_path).suffix.lower()
@@ -118,10 +136,10 @@ def extract_text(file_path):
 
         if len(useful_text) >= 100:
             print("PDF numérique > PyMuPDF")
-
             return native_text
 
-        print("PDF sans text suffisant > PaddleOCR")
+        print("PDF scanné > conversion en image > PaddleOCR")
+        return extract_scanned_pdf_text(file_path)
 
     if extension in {".png", ".jpg", ".jpeg", ".webp"}:
         print("Image > PaddleOCR")
@@ -132,7 +150,8 @@ def extract_text(file_path):
     )
 
 def extract_ocr_text(file_path):
-    results = ocr.predict(file_path)
+    ocr_model = get_ocr()
+    results = ocr_model.predict(file_path)
 
     texts = []
 
@@ -150,7 +169,7 @@ def extract_operation(file_path):
 
     # 2. LLM
     response = chat(
-        model="llama3.2",
+        model="llama3.2:1b",
         messages=[
             {
                 "role": "system",
@@ -198,10 +217,35 @@ def extract_operation(file_path):
             }
         ],
         format=Operation.model_json_schema(),
+        keep_alive="30m",
         options={
-            "temperature": 0
+            "temperature": 0,
+            "num_predict" : 256,
+            "num_ctx" : 4096,
         }
     )
+    print("\n===== PERFORMANCE OLLAMA =====")
+
+    print(
+        "Chargement modèle :",
+        round((response.load_duration or 0) / 1_000_000_000, 2),
+        "s"
+    )
+
+    print(
+        "Analyse prompt :",
+        round((response.prompt_eval_duration or 0) / 1_000_000_000, 2),
+        "s"
+    )
+
+    print(
+        "Génération réponse :",
+        round((response.eval_duration or 0) / 1_000_000_000, 2),
+        "s"
+    )
+
+    print("Tokens prompt :", response.prompt_eval_count)
+    print("Tokens générés :", response.eval_count)
 
     # 3. Validation
     operation = Operation.model_validate_json(
@@ -225,6 +269,37 @@ def extract_pdf_native_text(pdf_path):
     document.close()
 
     return "\n".join(pages_text)
+
+def extract_scanned_pdf_text(pdf_path):
+    document = pymupdf.open(pdf_path)
+    texts = []
+
+    try:
+        for page_number, page in enumerate(document):
+            print(f"OCR page PDF : {page_number + 1}")
+
+            # Transformation de la page PDF en image
+            pix = page.get_pixmap(matrix=pymupdf.Matrix(2, 2))
+
+            temp_image = Path(pdf_path).with_name(
+                f"_temp_page_{page_number + 1}.png"
+            )
+
+            pix.save(str(temp_image))
+
+            try:
+                page_text = extract_ocr_text(str(temp_image))
+
+                if page_text.strip():
+                    texts.append(page_text)
+
+            finally:
+                temp_image.unlink(missing_ok=True)
+
+    finally:
+        document.close()
+
+    return "\n".join(texts)
 
 def extract_excel_text(file_path):
     workbook = load_workbook(

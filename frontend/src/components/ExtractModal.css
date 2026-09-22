@@ -1,0 +1,448 @@
+/* ------------------------------------------------------------------ */
+/* Overlay & modal shell                                              */
+/* ------------------------------------------------------------------ */
+
+.extract-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+
+  animation: extractOverlayIn 0.25s ease;
+}
+
+.extract-modal {
+  position: relative;
+  width: min(430px, calc(100% - 32px));
+  padding: 30px;
+
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+
+  text-align: center;
+
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+
+  animation:
+    extractModalIn 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    extractCardBreathe 4s 0.6s ease-in-out infinite;
+}
+
+/* Ambient glow + scan beam behind the icon, built entirely from
+   pseudo-elements so the markup doesn't need to change. */
+
+
+
+.extract-modal h3 {
+  position: relative;
+  z-index: 2;
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+  animation: extractFadeUp 0.45s 0.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.extract-modal p {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 20px;
+  color: #64748b;
+  animation: extractFadeUp 0.45s 0.12s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* ------------------------------------------------------------------ */
+/* Progress bar                                                       */
+/* ------------------------------------------------------------------ */
+
+.extract-progress {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 10px;
+
+  background: #e2e8f0;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.08);
+  overflow: hidden;
+
+  animation: extractFadeUp 0.45s 0.18s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.extract-progress-bar {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+
+  background: linear-gradient(90deg, #2563eb, #4f46e5);
+  border-radius: 999px;
+
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Small glowing "lead" marker riding the edge of the fill */
+.extract-progress-bar::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.4), 0 0 8px 2px rgba(37, 99, 235, 0.5);
+  transform: translate(50%, -50%);
+  animation: extractLeadGlow 1.4s ease-in-out infinite;
+}
+
+/* Shimmer sweeping across the filled portion */
+.extract-progress-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-100%);
+  animation: extractShimmer 1.8s ease-in-out infinite;
+}
+
+.extract-progress-value {
+  position: relative;
+  z-index: 2;
+  margin-top: 10px;
+
+  font: 700 20px/1 ui-monospace, SFMono-Regular, 'JetBrains Mono', Menlo, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+
+  animation: extractFadeUp 0.45s 0.24s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.extract-modal-hint {
+  position: relative;
+  z-index: 2;
+  display: block;
+  margin-top: 10px;
+
+  font-size: 12px;
+  color: #94a3b8;
+
+  animation:
+    extractFadeUp 0.45s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both,
+    extractHintBreathe 3.5s 1s ease-in-out infinite;
+}
+
+/* ------------------------------------------------------------------ */
+/* Keyframes                                                          */
+/* ------------------------------------------------------------------ */
+
+@keyframes extractOverlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes extractModalIn {
+  from { opacity: 0; transform: scale(0.94) translateY(6px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes extractCardBreathe {
+  0%, 100% { box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2); }
+  50%      { box-shadow: 0 24px 60px rgba(37, 99, 235, 0.22); }
+}
+
+
+@keyframes extractFadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes extractLeadGlow {
+  0%, 100% { opacity: 0.7; transform: translate(50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(50%, -50%) scale(1.35); }
+}
+
+@keyframes extractShimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(220%); }
+}
+
+@keyframes extractHintBreathe {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 1; }
+}
+@keyframes scannerGlow {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.95);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes scannerBeam {
+  0% {
+    transform: translateY(-17px);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateY(17px);
+    opacity: 0;
+  }
+}
+/* ------------------------------------------------------------------ */
+/* Scanner                                                            */
+/* ------------------------------------------------------------------ */
+
+.extract-scanner {
+  position: relative;
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.extract-scanner-glow {
+  position: absolute;
+  inset: 0;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(37, 99, 235, 0.18) 0%,
+      rgba(79, 70, 229, 0.08) 45%,
+      transparent 72%
+    );
+
+  animation: scannerGlow 2.2s ease-in-out infinite;
+}
+
+
+/* Document */
+
+.extract-doc {
+  position: relative;
+  z-index: 2;
+
+  width: 52px;
+  height: 52px;
+
+  filter: drop-shadow(0 5px 8px rgba(37, 99, 235, 0.18));
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.extract-doc-page {
+  fill: #eff6ff;
+  stroke: #2563eb;
+  stroke-width: 1.8;
+}
+
+.extract-doc-fold {
+  stroke: #2563eb;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.extract-doc-line {
+  stroke: #60a5fa;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+
+/* Ligne de scan */
+
+.extract-scanner-beam {
+  position: absolute;
+  z-index: 3;
+
+  left: 21px;
+  top: 27px;
+
+  width: 48px;
+  height: 2px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      #2563eb,
+      #60a5fa,
+      transparent
+    );
+
+  box-shadow:
+    0 0 5px rgba(37, 99, 235, 0.7),
+    0 0 12px rgba(37, 99, 235, 0.35);
+
+  animation: scannerBeam 1.8s ease-in-out infinite;
+}
+
+
+/* Check de fin */
+
+.extract-check {
+  position: absolute;
+  z-index: 4;
+
+  width: 54px;
+  height: 54px;
+
+  opacity: 0;
+  transform: scale(0.7);
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+}
+
+.extract-check-circle {
+  stroke: #16a34a;
+  stroke-width: 2;
+  fill: rgba(34, 197, 94, 0.08);
+}
+
+.extract-check-mark {
+  stroke: #16a34a;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+
+/* Quand extraction = 100 % */
+
+.extract-scanner.is-done .extract-doc {
+  opacity: 0;
+  transform: scale(0.75);
+}
+
+.extract-scanner.is-done .extract-scanner-beam {
+  opacity: 0;
+  animation: none;
+}
+
+.extract-scanner.is-done .extract-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.extract-scanner.is-done .extract-scanner-glow {
+  background:
+    radial-gradient(
+      circle,
+      rgba(34, 197, 94, 0.18),
+      rgba(34, 197, 94, 0.06) 50%,
+      transparent 72%
+    );
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Step text                                                          */
+/* ------------------------------------------------------------------ */
+
+.extract-modal-step {
+  min-height: 20px;
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Progress additions                                                 */
+/* ------------------------------------------------------------------ */
+
+.extract-progress-lead {
+  position: absolute;
+
+  top: 50%;
+  right: 0;
+
+  width: 10px;
+  height: 10px;
+
+  border-radius: 50%;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 2px rgba(37, 99, 235, 0.4),
+    0 0 8px rgba(37, 99, 235, 0.7);
+
+  transform: translate(50%, -50%);
+
+  animation: extractLeadGlow 1.4s ease-in-out infinite;
+}
+
+.extract-progress-bar.is-done {
+  background: linear-gradient(90deg, #22c55e, #16a34a);
+}
+
+.extract-progress-percent {
+  margin-left: 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+/* ------------------------------------------------------------------ */
+/* Reduced motion                                                     */
+/* ------------------------------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  .extract-modal-overlay,
+  .extract-modal,
+  .extract-modal::before,
+  .extract-modal::after,
+  .extract-modal-icon,
+  .extract-modal h3,
+  .extract-modal p,
+  .extract-progress,
+  .extract-progress-bar,
+  .extract-progress-bar::after,
+  .extract-progress-value,
+  .extract-scanner,
+    .extract-scanner-glow,
+    .extract-scanner-beam,
+    .extract-doc,
+    .extract-check,
+    .extract-progress-lead,
+  .extract-modal-hint {
+    animation: none !important;
+  }
+}
