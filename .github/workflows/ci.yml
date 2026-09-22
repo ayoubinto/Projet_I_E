@@ -82,3 +82,76 @@ jobs:
 
       - name: Construire l'image Docker frontend
         run: docker build -f deployment/Dockerfile.frontend -t projet-ie-frontend:test .
+
+  publish-backend:
+    needs:
+      - backend
+      - frontend
+      - docker-backend
+      - docker-frontend
+
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deployment/Dockerfile.backend
+          push: true
+          tags: |
+            ghcr.io/ayoubinto/projet_i_e-backend:latest
+            ghcr.io/ayoubinto/projet_i_e-backend:${{ github.sha }}
+
+
+  publish-frontend:
+    needs:
+      - backend
+      - frontend
+      - docker-backend
+      - docker-frontend
+
+    if: github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: deployment/Dockerfile.frontend
+          push: true
+          tags: |
+            ghcr.io/ayoubinto/projet_i_e-frontend:latest
+            ghcr.io/ayoubinto/projet_i_e-frontend:${{ github.sha }}
